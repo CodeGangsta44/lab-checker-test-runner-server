@@ -3,6 +3,7 @@ package org.kpi.usb.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.kpi.usb.service.MainService;
+import org.kpi.usb.service.WebHookParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +19,11 @@ import java.util.Map;
 public class MainController {
 
     private MainService mainService;
+    private WebHookParser webHookParser;
 
     @Autowired
-    public MainController(MainService mainService) {
+    public MainController(MainService mainService, WebHookParser webHookParser) {
+        this.webHookParser = webHookParser;
         this.mainService = mainService;
     }
 

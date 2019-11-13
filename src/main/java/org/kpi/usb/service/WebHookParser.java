@@ -4,12 +4,14 @@ import org.json.JSONObject;
 import org.kpi.usb.entity.LabRepo;
 import org.kpi.usb.entity.PullRequest;
 import org.kpi.usb.entity.PullRequestUser;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+@Service
 public class WebHookParser {
 
-    public static PullRequestUser getUserFromJSONWebHook(String json){
+    public PullRequestUser getUserFromJSONWebHook(String json){
         JSONObject obj = new JSONObject(json);
         return PullRequestUser.builder()
                 .login(obj.getJSONObject("sender").getString("login"))
@@ -18,7 +20,7 @@ public class WebHookParser {
                 .build();
     }
 
-    public static LabRepo getRepoFromJSONWebHook(String json){
+    public LabRepo getRepoFromJSONWebHook(String json){
         JSONObject obj = new JSONObject(json);
         return LabRepo.builder()
                 .name(obj.getJSONObject("repository").getString("name"))
@@ -28,7 +30,7 @@ public class WebHookParser {
                 .build();
     }
 
-    public static PullRequest getRequestFromJSONWebHook(String json) {
+    public PullRequest getRequestFromJSONWebHook(String json) {
         JSONObject obj = new JSONObject(json);
         return PullRequest.builder()
                 .user(getUserFromJSONWebHook(json))
