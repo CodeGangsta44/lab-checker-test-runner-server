@@ -29,26 +29,11 @@ public class MainController {
 
     @PostMapping
     public void postMethod(@RequestBody String body) {
-        System.out.println("I am here");
-        System.out.println(body);
 
-        try {
-            Map<String, Object> requestMap = new ObjectMapper().readValue(body, new TypeReference<Map<String, Object>>() {});
+        String repoName = webHookParser.getRepoFromJSONWebHook(body).getName();
+        String login = webHookParser.getUserFromJSONWebHook(body).getLogin();
 
-            Map<String, Object> pullRequestMap = ((Map<String, Object>)(requestMap.get("pull_request")));
-            Map<String, Object> userMap = ((Map<String, Object>)(pullRequestMap.get("user")));
-            Map<String, Object> repositoryMap = ((Map<String, Object>)(requestMap.get("repository")));
+        mainService.runTest(repoName,login);
 
-            String login = (String)(userMap.get("login"));
-            String repoName = (String)(repositoryMap.get("name"));
-
-            System.out.println(requestMap);
-            System.out.println(login);
-            System.out.println(repoName);
-
-            mainService.runTest(repoName, login);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
