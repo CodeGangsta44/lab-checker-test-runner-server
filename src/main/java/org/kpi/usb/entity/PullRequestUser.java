@@ -10,5 +10,5 @@ import java.util.Map;
 public class PullRequestUser {
     private String login;
     private Long id;
-    private Map<String,Integer> numberOfPullRequestsForEachLab;
+    private Map<String, Integer> numberOfPullRequestsForEachLab;
 }

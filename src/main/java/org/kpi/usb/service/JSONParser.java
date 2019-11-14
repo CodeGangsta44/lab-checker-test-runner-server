@@ -8,14 +8,13 @@ import org.kpi.usb.entity.PullRequestUser;
 import org.kpi.usb.entity.Result;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 import java.util.HashMap;
 
 @Service
 public class JSONParser {
 
-    public PullRequestUser getUserFromJSONWebHook(String json){
+    public PullRequestUser getUserFromJSONWebHook(String json) {
         JSONObject obj = new JSONObject(json);
         return PullRequestUser.builder()
                 .login(obj.getJSONObject("sender").getString("login"))
@@ -24,7 +23,7 @@ public class JSONParser {
                 .build();
     }
 
-    public LabRepo getRepoFromJSONWebHook(String json){
+    public LabRepo getRepoFromJSONWebHook(String json) {
         JSONObject obj = new JSONObject(json);
         return LabRepo.builder()
                 .name(obj.getJSONObject("repository").getString("name"))
@@ -45,12 +44,12 @@ public class JSONParser {
                 .build();
     }
 
-    public String createResultJSONString (Result result){
+    public String createResultJSONString(Result result) {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = "";
         try {
             jsonInString = mapper.writeValueAsString(result);
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return jsonInString;

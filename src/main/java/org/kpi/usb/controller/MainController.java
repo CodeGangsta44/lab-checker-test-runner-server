@@ -1,8 +1,8 @@
 package org.kpi.usb.controller;
 
 import org.kpi.usb.entity.Result;
-import org.kpi.usb.service.MainService;
 import org.kpi.usb.service.JSONParser;
+import org.kpi.usb.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +54,6 @@ public class MainController {
         String jsonString = JSONParser.createResultJSONString(result);
 
     }
-    
+
 }
 
