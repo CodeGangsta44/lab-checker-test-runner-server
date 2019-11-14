@@ -44,16 +44,13 @@ public class MainController {
         //TODO Check optional before get :)
         int studentVariant = studentVariantOptional.get();
 
-        testingService.runTest(repository.getName(), student.getLogin(), studentVariant, 5);
-
-        //Todo add getting number of passed tests
-        final int TEMP_MARK = 10;
+        final int mark = testingService.runTest(repository.getName(), student.getLogin(), studentVariant, 5);
 
         Result result = Result.builder()
                 .studentGithubLogin(student.getLogin())
                 .studentGithubID(student.getId())
                 .repositoryName(repository.getName())
-                .mark(TEMP_MARK)
+                .mark(mark)
                 .variant(studentVariant)
                 .language(repository.getLanguage())
                 .updatedDate(pullRequest.getUpdatedDate())
