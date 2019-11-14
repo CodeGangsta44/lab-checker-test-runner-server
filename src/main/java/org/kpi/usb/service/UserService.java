@@ -15,7 +15,7 @@ import java.util.Optional;
 public class UserService {
     private String persistenceServerAddr;
 
-    public UserService(@Value("labchecker.persistence-server.address") String persistenceServerAddr) {
+    public UserService(@Value("${labchecker.persistence-server.address}") String persistenceServerAddr) {
         this.persistenceServerAddr = persistenceServerAddr;
     }
 
