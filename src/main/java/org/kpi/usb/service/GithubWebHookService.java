@@ -55,7 +55,7 @@ public class GithubWebHookService {
             return PullRequest.builder()
                     .student(getStudentFromJSON(content))
                     .repository(getRepositoryFromJSON(content))
-                    .action(root.at("jhe/action").asText())
+                    .action(root.at("/action").asText())
                     .title(root.at("/pull_request/title").asText())
                     .createdDate(LocalDateTime.ofInstant(createdInstant, ZoneId.systemDefault()))
                     .updatedDate(LocalDateTime.ofInstant(updatedInstant, ZoneId.systemDefault()))
