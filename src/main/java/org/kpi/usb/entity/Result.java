@@ -3,14 +3,16 @@ package org.kpi.usb.entity;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class Result {
-    String studentLogin;
-    String commitDate;
-    String labName;
+    String studentGithubLogin;
+    long studentGithubID;
+    int variant;
+    int mark;
+    String repositoryName;
     String language;
-    Long studentID;
-    Long variant;
-    Long result;
+    LocalDateTime updatedDate;
 }

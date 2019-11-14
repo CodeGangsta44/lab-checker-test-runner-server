@@ -1,7 +1,11 @@
 package org.kpi.usb.controller;
 
+import org.kpi.usb.entity.PullRequest;
+import org.kpi.usb.entity.Repository;
 import org.kpi.usb.entity.Result;
-import org.kpi.usb.service.JSONParser;
+import org.kpi.usb.entity.Student;
+import org.kpi.usb.service.GithubWebHookService;
+import org.kpi.usb.service.ResultService;
 import org.kpi.usb.service.TestingService;
 import org.kpi.usb.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,48 +21,45 @@ public class MainController {
 
     private TestingService testingService;
     private UserService userService;
-    private JSONParser JSONParser;
+    private ResultService resultService;
+    private GithubWebHookService githubWebHookService;
 
     public MainController(TestingService testingService,
                           UserService userService,
-                          JSONParser JSONParser) {
+                          ResultService resultService,
+                          GithubWebHookService githubWebHookService) {
         this.testingService = testingService;
         this.userService = userService;
-        this.JSONParser = JSONParser;
+        this.resultService = resultService;
+        this.githubWebHookService = githubWebHookService;
     }
 
-    //Todo refactor method
     @PostMapping
-    public void postMethod(@RequestBody String body) {
+    public void receiveWebHook(@RequestBody String content) {
+        Repository repository = githubWebHookService.getRepositoryFromJSON(content);
+        Student student = githubWebHookService.getStudentFromJSON(content);
+        PullRequest pullRequest = githubWebHookService.getPullRequestFromJSON(content);
 
-        String repoName = JSONParser.getRepoFromJSONWebHook(body).getName();
-        String language = JSONParser.getRepoFromJSONWebHook(body).getLanguage();
-        String login = JSONParser.getUserFromJSONWebHook(body).getLogin();
-        Long studentID = JSONParser.getUserFromJSONWebHook(body).getId();
-        String date = JSONParser.getRequestFromJSONWebHook(body).getDate();
-
-        Optional<Integer> studentVariantOptional = userService.getUserVariantByGithubID(studentID);
+        Optional<Integer> studentVariantOptional = userService.getUserVariantByGithubID(student.getId());
         //TODO Check optional before get :)
         int studentVariant = studentVariantOptional.get();
 
-        testingService.runTest(repoName, login, studentVariant, 5);
+        testingService.runTest(repository.getName(), student.getLogin(), studentVariant, 5);
 
         //Todo add getting number of passed tests
-        Long testsPassedNumber = 0L;
+        final int TEMP_MARK = 10;
 
         Result result = Result.builder()
-                .result(testsPassedNumber)
-                .studentLogin(login)
-                .labName(repoName)
-                .language(language)
-                .commitDate(date)
-                .studentID(studentID)
-                .variant((long) studentVariant)
+                .studentGithubLogin(student.getLogin())
+                .studentGithubID(student.getId())
+                .repositoryName(repository.getName())
+                .mark(TEMP_MARK)
+                .variant(studentVariant)
+                .language(repository.getLanguage())
+                .updatedDate(pullRequest.getUpdatedDate())
                 .build();
 
-        //Todo add sending resultJSONString
-        String jsonString = JSONParser.createResultJSONString(result);
-
+        resultService.sendResultToPersistenceServer(result);
     }
 
 }

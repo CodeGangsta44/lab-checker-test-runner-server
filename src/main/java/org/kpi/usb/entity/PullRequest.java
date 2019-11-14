@@ -3,12 +3,15 @@ package org.kpi.usb.entity;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class PullRequest {
-    private PullRequestUser user;
-    private LabRepo repo;
-    private String date;
-    private String message;
-    private Long number;
+    private Student student;
+    private Repository repository;
+    private String action;
+    private String title;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 }
