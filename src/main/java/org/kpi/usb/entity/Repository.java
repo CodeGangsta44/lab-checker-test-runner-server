@@ -5,9 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class LabRepo {
-    private String name;
+public class Repository {
     private Long id;
+    private String name;
     private String language;
-    private Long forksCount;
 }

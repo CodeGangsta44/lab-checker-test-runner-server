@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @Slf4j
 public class ResultService {
-    @Value("${labchecker.persistence-server.address}")
     private String persistenceServerAddr;
 
     public ResultService(@Value("${labchecker.persistence-server.address}") String persistenceServerAddr) {
