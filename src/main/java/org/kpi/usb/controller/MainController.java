@@ -3,31 +3,33 @@ package org.kpi.usb.controller;
 import org.kpi.usb.entity.Result;
 import org.kpi.usb.service.JSONParser;
 import org.kpi.usb.service.MainService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.kpi.usb.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/")
 public class MainController {
 
     private MainService mainService;
+    private UserService userService;
     private JSONParser JSONParser;
 
-    @Autowired
-    public MainController(MainService mainService, JSONParser JSONParser) {
-        this.JSONParser = JSONParser;
+    public MainController(MainService mainService,
+                          UserService userService,
+                          JSONParser JSONParser) {
         this.mainService = mainService;
+        this.userService = userService;
+        this.JSONParser = JSONParser;
     }
 
     //Todo refactor method
     @PostMapping
     public void postMethod(@RequestBody String body) {
-
-        //TODO Add getting variant
-        Long variant = 0L;
 
         String repoName = JSONParser.getRepoFromJSONWebHook(body).getName();
         String language = JSONParser.getRepoFromJSONWebHook(body).getLanguage();
@@ -35,7 +37,11 @@ public class MainController {
         Long studentID = JSONParser.getUserFromJSONWebHook(body).getId();
         String date = JSONParser.getRequestFromJSONWebHook(body).getDate();
 
-        mainService.runTest(repoName, login);
+        Optional<Integer> studentVariantOptional = userService.getUserVariantByGithubID(studentID);
+        //TODO Check optional before get :)
+        int studentVariant = studentVariantOptional.get();
+
+        mainService.runTest(repoName, login, studentVariant);
 
         //Todo add getting number of passed tests
         Long testsPassedNumber = 0L;
@@ -47,7 +53,7 @@ public class MainController {
                 .language(language)
                 .commitDate(date)
                 .studentID(studentID)
-                .variant(variant)
+                .variant((long) studentVariant)
                 .build();
 
         //Todo add sending resultJSONString

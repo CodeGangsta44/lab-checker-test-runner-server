@@ -10,7 +10,7 @@ public class MainService {
     private final String OWNER = "CodeGangsta44/";
     private final String GITHUB_POSTFIX = ".git";
 
-    public void runTest(String repoName, String studentLogin) {
+    public void runTest(String repoName, String studentLogin, int studentVariant) {
         String sourceRepo = GITHUB_PREFIX + studentLogin + "/" + repoName + GITHUB_POSTFIX;
         String testRepo = GITHUB_PREFIX + OWNER + repoName + "Test" + GITHUB_POSTFIX;
 
