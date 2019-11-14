@@ -6,8 +6,10 @@ import lombok.Data;
 @Data
 @Builder
 public class Result {
-    String login;
-    String date;
+    String studentLogin;
+    String commitDate;
+    String labName;
+    String language;
     Long studentID;
     Long variant;
     Long result;

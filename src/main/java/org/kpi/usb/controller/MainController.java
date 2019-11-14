@@ -30,6 +30,7 @@ public class MainController {
         Long variant = 0L;
 
         String repoName = JSONParser.getRepoFromJSONWebHook(body).getName();
+        String language = JSONParser.getRepoFromJSONWebHook(body).getLanguage();
         String login = JSONParser.getUserFromJSONWebHook(body).getLogin();
         Long studentID = JSONParser.getUserFromJSONWebHook(body).getId();
         String date = JSONParser.getRequestFromJSONWebHook(body).getDate();
@@ -41,8 +42,10 @@ public class MainController {
 
         Result result = Result.builder()
                 .result(testsPassedNumber)
-                .login(login)
-                .date(date)
+                .studentLogin(login)
+                .labName(repoName)
+                .language(language)
+                .commitDate(date)
                 .studentID(studentID)
                 .variant(variant)
                 .build();
@@ -51,4 +54,6 @@ public class MainController {
         String jsonString = JSONParser.createResultJSONString(result);
 
     }
+    
 }
+
