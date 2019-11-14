@@ -7,15 +7,18 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="labChecker" />
+        <module name="labchecker-test-runner-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="labChecker" target="11" />
+      <module name="labchecker-test-runner-server" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="labChecker" options="-parameters" />
+      <module name="labchecker-test-runner-server" options="-parameters" />
     </option>
   </component>
 </project>

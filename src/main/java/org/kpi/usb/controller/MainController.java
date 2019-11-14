@@ -3,6 +3,7 @@ package org.kpi.usb.controller;
 import org.kpi.usb.entity.Result;
 import org.kpi.usb.service.JSONParser;
 import org.kpi.usb.service.MainService;
+import org.kpi.usb.service.TestingService;
 import org.kpi.usb.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,14 +16,14 @@ import java.util.Optional;
 @RequestMapping("/")
 public class MainController {
 
-    private MainService mainService;
+    private TestingService testingService;
     private UserService userService;
     private JSONParser JSONParser;
 
-    public MainController(MainService mainService,
+    public MainController(TestingService testingService,
                           UserService userService,
                           JSONParser JSONParser) {
-        this.mainService = mainService;
+        this.testingService = testingService;
         this.userService = userService;
         this.JSONParser = JSONParser;
     }
@@ -41,7 +42,7 @@ public class MainController {
         //TODO Check optional before get :)
         int studentVariant = studentVariantOptional.get();
 
-        mainService.runTest(repoName, login, studentVariant);
+        testingService.runTest(repoName, login, studentVariant);
 
         //Todo add getting number of passed tests
         Long testsPassedNumber = 0L;
