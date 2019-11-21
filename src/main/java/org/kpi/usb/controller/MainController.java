@@ -4,10 +4,7 @@ import org.kpi.usb.entity.PullRequest;
 import org.kpi.usb.entity.Repository;
 import org.kpi.usb.entity.Result;
 import org.kpi.usb.entity.Student;
-import org.kpi.usb.service.GithubWebHookService;
-import org.kpi.usb.service.ResultService;
-import org.kpi.usb.service.TestingService;
-import org.kpi.usb.service.UserService;
+import org.kpi.usb.service.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,15 +20,18 @@ public class MainController {
     private UserService userService;
     private ResultService resultService;
     private GithubWebHookService githubWebHookService;
+    private LabService labService;
 
     public MainController(TestingService testingService,
                           UserService userService,
                           ResultService resultService,
-                          GithubWebHookService githubWebHookService) {
+                          GithubWebHookService githubWebHookService,
+                          LabService labService) {
         this.testingService = testingService;
         this.userService = userService;
         this.resultService = resultService;
         this.githubWebHookService = githubWebHookService;
+        this.labService = labService;
     }
 
     @PostMapping
@@ -41,10 +41,15 @@ public class MainController {
         PullRequest pullRequest = githubWebHookService.getPullRequestFromJSON(content);
 
         Optional<Integer> studentVariantOptional = userService.getUserVariantByGithubID(student.getId());
-        //TODO Check optional before get :)
-        int studentVariant = studentVariantOptional.get();
+        Optional<Integer> maxMarkForLab = labService.getMaxMarkForLab(repository.getName());
 
-        final int mark = testingService.runTest(repository.getName(), student.getLogin(), studentVariant, 5);
+        int studentVariant = studentVariantOptional.orElseThrow();
+        int maxMark = maxMarkForLab.orElseThrow();
+
+        final int mark = testingService.runTest(repository.getName(),
+                student.getLogin(),
+                studentVariant,
+                maxMark);
 
         Result result = Result.builder()
                 .studentGithubLogin(student.getLogin())
