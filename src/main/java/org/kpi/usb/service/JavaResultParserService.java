@@ -10,7 +10,7 @@ public class JavaResultParserService {
     private static final String FIELD_FAILED = "Failures";
     private static final String FIELD_ERROR = "Errors";
     private static final String FIELD_SKIPPED = "Skipped";
-    private static final String INTERNAL_FIELD_DELIMITER = ":=";
+    private static final String INTERNAL_FIELD_DELIMITER = ": ";
 
     public Integer getResult(List<String> resultFile, Integer maxMark) {
         return getMark(getResultMap(getSummaryString(resultFile)), maxMark);
@@ -35,8 +35,7 @@ public class JavaResultParserService {
     private Integer getMark(Map<String, Integer> resultMap, Integer maxMark) {
         Integer totalTests = resultMap.get(FIELD_TOTAL_RUN);
         Integer failedTests = resultMap.get(FIELD_FAILED)
-                + resultMap.get(FIELD_ERROR)
-                + resultMap.get(FIELD_SKIPPED);
+                + resultMap.get(FIELD_ERROR);
 
         return Math.round(((float)((totalTests - failedTests) / totalTests)) * maxMark);
     }

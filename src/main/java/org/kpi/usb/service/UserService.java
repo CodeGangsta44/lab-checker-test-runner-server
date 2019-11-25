@@ -19,11 +19,12 @@ public class UserService {
         this.persistenceServerAddr = persistenceServerAddr;
     }
 
-    public Optional<Integer> getUserVariantByGithubID(long githubID) {
-        final String userVariantEndpoint = "/api/v1/students/{githubID}/variant";
+    public Optional<Integer> getUserVariantByGithubIDAndLabRepo(long githubID, String labRepoName) {
+        final String userVariantEndpoint = String.format("/api/v1/students/%s/variant", githubID);
+//        final String userVariantEndpoint = "/api/v1/students/{githubID}/variant";
 
         Map<String, String> params = new HashMap<>();
-        params.put("githubID", String.valueOf(githubID));
+        params.put("labRepoName", labRepoName);
 
         RestTemplate restTemplate = new RestTemplate();
         String variant = restTemplate.getForObject(persistenceServerAddr + userVariantEndpoint, String.class, params);
