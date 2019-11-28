@@ -51,6 +51,7 @@ public class MainController {
         Optional<Integer> studentVariantOptional = userService.getUserVariantByGithubIDAndLabRepo(student.getId(), repository.getName());
         log.info("Start receiving maximal mark for lab for student");
         Optional<Integer> maxMarkForLab = labService.getMaxMarkForLab(repository.getName());
+        log.info("Start receiving test repo name for lab");
         Optional<String> testRepoNameForLab = labService.getTestRepoNameForLab(repository.getName());
 
         int studentVariant = studentVariantOptional.orElseThrow();
