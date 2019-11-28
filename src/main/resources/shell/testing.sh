@@ -20,6 +20,7 @@ exec > testing-area/$4/log.txt;
 cd testing-area/$4/stage;
 git clone $1 2>&1;
 git clone $2 -b "variant_"$3 2>&1;
+rm -rf $6/src/main/java;
 mkdir -p $6/src/main/java;
 cp -R $5/src/main/java/ $6/src/main/;
 cd $6;
