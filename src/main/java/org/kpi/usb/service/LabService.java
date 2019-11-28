@@ -20,4 +20,11 @@ public class LabService {
         Integer maxMark = restTemplate.getForObject(persistenceServerAddr + getMarkEndpoint, Integer.class);
         return Optional.ofNullable(maxMark);
     }
+
+    public Optional<String> getTestRepoNameForLab(String labRepoName) {
+        final String getTestRepoNameEndpoint = String.format("/api/v1/labs/%s/test-repo", labRepoName);
+        RestTemplate restTemplate = new RestTemplate();
+        String testRepoName = restTemplate.getForObject(persistenceServerAddr + getTestRepoNameEndpoint, String.class);
+        return Optional.ofNullable(testRepoName);
+    }
 }

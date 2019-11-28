@@ -42,11 +42,14 @@ public class MainController {
 
         Optional<Integer> studentVariantOptional = userService.getUserVariantByGithubIDAndLabRepo(student.getId(), repository.getName());
         Optional<Integer> maxMarkForLab = labService.getMaxMarkForLab(repository.getName());
+        Optional<String> testRepoNameForLab = labService.getTestRepoNameForLab(repository.getName());
 
         int studentVariant = studentVariantOptional.orElseThrow();
         int maxMark = maxMarkForLab.orElseThrow();
+        String testRepoName = testRepoNameForLab.orElseThrow();
 
         final int mark = testingService.runTest(repository.getName(),
+                testRepoName,
                 student.getLogin(),
                 studentVariant,
                 maxMark);

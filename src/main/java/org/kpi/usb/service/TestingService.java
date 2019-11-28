@@ -10,9 +10,9 @@ import java.util.List;
 @Slf4j
 public class TestingService {
     private final String GITHUB_PREFIX = "git@github.com:";
-    private final String OWNER = "CodeGangsta44/";
+    private final String OWNER = "labChecker";
     private final String GITHUB_POSTFIX = ".git";
-    private final String TEST_AREA_DIRECTORY_NAME = "testing-area/";
+    private final String TEST_AREA_DIRECTORY_NAME = "testing-area";
     private final String RESULT_FILE_NAME = "results.txt";
 
     private ReaderService readerService;
@@ -23,25 +23,29 @@ public class TestingService {
         this.javaResultParserService = javaResultParserService;
     }
 
-    public Integer runTest(String repoName, String studentLogin, Integer studentVariant, Integer maxMark) {
-        String sourceRepo = GITHUB_PREFIX + studentLogin + "/" + repoName + GITHUB_POSTFIX;
-        String testRepo = GITHUB_PREFIX + OWNER + repoName + "Test" + GITHUB_POSTFIX;
-        String resultFileUri = TEST_AREA_DIRECTORY_NAME + studentLogin + "/" + RESULT_FILE_NAME;
+    public Integer runTest(String sourceRepoName, String testRepoName, String studentLogin, Integer studentVariant, Integer maxMark) {
+        String sourceRepoUrl = GITHUB_PREFIX + studentLogin + "/" + sourceRepoName + GITHUB_POSTFIX;
+        String testRepoUrl = GITHUB_PREFIX + OWNER + "/" + testRepoName + GITHUB_POSTFIX;
+        String resultFileUri = TEST_AREA_DIRECTORY_NAME + "/" + studentLogin + "/" + RESULT_FILE_NAME;
 
-        executeScript(sourceRepo, testRepo, studentVariant, studentLogin);
+        executeScript(sourceRepoUrl, testRepoUrl, studentVariant, studentLogin, sourceRepoName, testRepoName);
         return parseResult(readerService.readFile(resultFileUri), maxMark);
     }
 
-    private void executeScript(String sourceRepo, String testRepo, int studentVariant, String studentLogin) {
+    private void executeScript(String sourceRepoUrl, String testRepoUrl, int studentVariant, String studentLogin, String sourceRepoName, String testRepoName) {
         String cmd = "./src/main/resources/shell/testing.sh"
                 + " "
-                + sourceRepo
+                + sourceRepoUrl
                 + " "
-                + testRepo
+                + testRepoUrl
                 + " "
                 + String.format("%02d", studentVariant)
                 + " "
-                + studentLogin;
+                + studentLogin
+                + " "
+                + sourceRepoName
+                + " "
+                + testRepoName;
 
         try {
             Process p = Runtime.getRuntime().exec(cmd);
