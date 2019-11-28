@@ -42,7 +42,7 @@ public class MainController {
         Student student = githubWebHookService.getStudentFromJSON(content);
         PullRequest pullRequest = githubWebHookService.getPullRequestFromJSON(content);
 
-        Optional<Integer> studentVariantOptional = userService.getUserVariantByGithubID(student.getId());
+        Optional<Integer> studentVariantOptional = userService.getUserVariantByGithubIDAndLabRepo(student.getId(), repository.getName());
         Optional<Integer> maxMarkForLab = labService.getMaxMarkForLab(repository.getName());
 
         int studentVariant = studentVariantOptional.orElseThrow();
