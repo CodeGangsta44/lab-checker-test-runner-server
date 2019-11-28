@@ -5,10 +5,7 @@ import org.kpi.usb.entity.Repository;
 import org.kpi.usb.entity.Result;
 import org.kpi.usb.entity.Student;
 import org.kpi.usb.service.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -32,6 +29,11 @@ public class MainController {
         this.resultService = resultService;
         this.githubWebHookService = githubWebHookService;
         this.labService = labService;
+    }
+
+    @GetMapping
+    public String getHelloWorld() {
+        return "Hello from labchecker!";
     }
 
     @PostMapping
