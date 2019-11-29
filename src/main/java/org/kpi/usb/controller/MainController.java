@@ -50,6 +50,8 @@ public class MainController {
         log.info("Entities parsed successfully");
         log.info("Current student login: {}", student.getLogin());
 
+        checkPullRequestAction(pullRequest);
+
         log.info("Start receiving variant for student");
         Optional<Integer> studentVariantOptional = userService.getUserVariantByGithubIDAndLabRepo(student.getId(), repository.getName());
         log.info("Start receiving maximal mark for lab for student");
@@ -89,6 +91,21 @@ public class MainController {
 
         log.info("Sending result to persistence server");
         resultService.sendResultToPersistenceServer(result);
+    }
+
+    private void checkPullRequestAction(PullRequest pullRequest) throws IllegalStateException {
+        if (!isOpened(pullRequest) || !isReopened(pullRequest)) {
+            log.warn("Pull request has illegal action: {}", pullRequest.getAction());
+            throw new IllegalStateException("Should trigger only on opened pull request");
+        }
+    }
+
+    private boolean isReopened(PullRequest pullRequest) {
+        return pullRequest.getAction().equals("reopened");
+    }
+
+    private boolean isOpened(PullRequest pullRequest) {
+        return pullRequest.getAction().equals("opened");
     }
 
 }
