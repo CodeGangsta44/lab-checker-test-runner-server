@@ -45,6 +45,6 @@ public class JavaResultParserService {
         Integer failedTests = resultMap.get(FIELD_FAILED)
                 + resultMap.get(FIELD_ERROR);
 
-        return Math.round(((float)((totalTests - failedTests) / totalTests)) * maxMark);
+        return Math.round(((float) ((double) (totalTests - failedTests) / totalTests)) * maxMark);
     }
 }
