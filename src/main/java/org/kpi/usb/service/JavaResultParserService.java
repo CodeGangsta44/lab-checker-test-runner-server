@@ -2,7 +2,10 @@ package org.kpi.usb.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class JavaResultParserService {
@@ -24,10 +27,15 @@ public class JavaResultParserService {
         Map<String, Integer> resultMap = new HashMap<>();
         List<String> fields = Arrays.asList(summaryString.split(","));
 
-        fields.forEach(field -> {
-                    String[] values = field.split(INTERNAL_FIELD_DELIMITER);
-                    resultMap.put(values[0], Integer.parseInt(values[1]));
-                });
+        resultMap.put(FIELD_TOTAL_RUN, Integer.valueOf(fields
+                .get(0)
+                .split(INTERNAL_FIELD_DELIMITER)[1]));
+        resultMap.put(FIELD_FAILED, Integer.valueOf(fields
+                .get(1)
+                .split(INTERNAL_FIELD_DELIMITER)[1]));
+        resultMap.put(FIELD_ERROR, Integer.valueOf(fields
+                .get(2)
+                .split(INTERNAL_FIELD_DELIMITER)[1]));
 
         return resultMap;
     }
