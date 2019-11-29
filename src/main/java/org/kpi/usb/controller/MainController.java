@@ -20,17 +20,20 @@ public class MainController {
     private ResultService resultService;
     private GithubWebHookService githubWebHookService;
     private LabService labService;
+    private NotificationService notificationService;
 
     public MainController(TestingService testingService,
                           UserService userService,
                           ResultService resultService,
                           GithubWebHookService githubWebHookService,
-                          LabService labService) {
+                          LabService labService,
+                          NotificationService notificationService) {
         this.testingService = testingService;
         this.userService = userService;
         this.resultService = resultService;
         this.githubWebHookService = githubWebHookService;
         this.labService = labService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping
@@ -61,6 +64,7 @@ public class MainController {
         String testRepoName = testRepoNameForLab.orElseThrow();
         log.info("Test repo name for lab: {}", testRepoName);
 
+        notificationService.notifyAboutStartOfBuild(repository.getName(), student.getId());
 
         log.info("Start testing lab {} for student {}", repository.getName(), student.getLogin());
         final int mark = testingService.runTest(repository.getName(),
