@@ -12,7 +12,7 @@ public class TestingService {
     private final String GITHUB_PREFIX = "git@github.com:";
     private final String OWNER = "labChecker";
     private final String GITHUB_POSTFIX = ".git";
-    private final String TEST_AREA_DIRECTORY_NAME = "testing-area";
+    private final String TEST_AREA_DIRECTORY_NAME = "./shell/testing-area";
     private final String RESULT_FILE_NAME = "results.txt";
 
     private ReaderService readerService;
