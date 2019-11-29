@@ -33,13 +33,13 @@ public class TestingService {
     }
 
     private void executeScript(String sourceRepoUrl, String testRepoUrl, int studentVariant, String studentLogin, String sourceRepoName, String testRepoName) {
-        String cmd = "./src/main/resources/shell/testing.sh"
+        String cmd = "./shell/testing.sh"
                 + " "
                 + sourceRepoUrl
                 + " "
                 + testRepoUrl
                 + " "
-                + String.format("%02d", studentVariant)
+                + studentVariant
                 + " "
                 + studentLogin
                 + " "
