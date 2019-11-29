@@ -12,7 +12,7 @@ public class TestingService {
     private final String GITHUB_PREFIX = "git@github.com:";
     private final String OWNER = "labChecker";
     private final String GITHUB_POSTFIX = ".git";
-    private final String TEST_AREA_DIRECTORY_NAME = "testing-area";
+    private final String TEST_AREA_DIRECTORY_NAME = "./shell/testing-area";
     private final String RESULT_FILE_NAME = "results.txt";
 
     private ReaderService readerService;
@@ -33,13 +33,13 @@ public class TestingService {
     }
 
     private void executeScript(String sourceRepoUrl, String testRepoUrl, int studentVariant, String studentLogin, String sourceRepoName, String testRepoName) {
-        String cmd = "./src/main/resources/shell/testing.sh"
+        String cmd = "./shell/testing.sh"
                 + " "
                 + sourceRepoUrl
                 + " "
                 + testRepoUrl
                 + " "
-                + String.format("%02d", studentVariant)
+                + studentVariant
                 + " "
                 + studentLogin
                 + " "

@@ -20,25 +20,18 @@ public class UserService {
     }
 
     public Optional<Integer> getUserVariantByGithubIDAndLabRepo(long githubID, String labRepoName) {
-        final String userVariantEndpoint = String.format("/api/v1/students/%s/variant", githubID);
-//        final String userVariantEndpoint = "/api/v1/students/{githubID}/variant";
-
-        Map<String, String> params = new HashMap<>();
+        final String userVariantEndpoint = String.format("/api/v1/students/%s/variant?labRepoName=%s", githubID, labRepoName);
+        Map<String, Object> params = new HashMap<>();
         params.put("labRepoName", labRepoName);
 
         RestTemplate restTemplate = new RestTemplate();
-        String variant = restTemplate.getForObject(persistenceServerAddr + userVariantEndpoint, String.class, params);
+        Integer variant = restTemplate.getForObject(persistenceServerAddr + userVariantEndpoint, Integer.class, params);
 
         if (Objects.isNull(variant)) {
             log.warn("There is no variant for such user with githubID: {}", githubID);
             return Optional.empty();
         } else {
-            try {
-                return Optional.of(Integer.parseInt(variant));
-            } catch (NumberFormatException e) {
-                log.error("Can not parse user variant", e);
-                return Optional.empty();
-            }
+            return Optional.of(variant);
         }
     }
 }

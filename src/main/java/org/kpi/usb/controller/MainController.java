@@ -94,7 +94,7 @@ public class MainController {
     }
 
     private void checkPullRequestAction(PullRequest pullRequest) throws IllegalStateException {
-        if (!isOpened(pullRequest) || !isReopened(pullRequest)) {
+        if (!isOpened(pullRequest) && !isReopened(pullRequest)) {
             log.warn("Pull request has illegal action: {}", pullRequest.getAction());
             throw new IllegalStateException("Should trigger only on opened pull request");
         }
